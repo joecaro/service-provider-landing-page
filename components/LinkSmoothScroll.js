@@ -1,17 +1,14 @@
 import React from "react";
-import { useRouter } from "next/router";
-import smoothScroll from "../utils/smoothScroll";
+import { smoothScrollAnim } from "../lib/smoothScroll";
 
-export default function LinkSmoothScroll({ href, children }) {
-  const router = useRouter();
-  const handleClick = (e) => {
-    e.preventDefault();
-    router
-      .push(href)
-      .then(() => {
-        return smoothScroll(href);
-      })
-      .catch((err) => console.error(err));
+export default function LinkSmoothScroll({ loc, children }) {
+  const scroll = (e) => {
+    e.preventDefault;
+    let el = document.getElementById(loc);
+    if (el) {
+      smoothScrollAnim(el, 600);
+      return;
+    }
   };
-  return <a onClick={handleClick}>{children}</a>;
+  return <a onClick={scroll}>{children}</a>;
 }

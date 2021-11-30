@@ -1,11 +1,27 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import LinkSmoothScroll from "../components/LinkSmoothScroll";
+import Fade from "react-reveal/Fade";
 
 export default function Home() {
   const [openDetail, setOpenDetail] = useState(null);
   const [openFaq, setOpenFaq] = useState(null);
   const [nav, setNav] = useState(null);
+  const [scrollPos, setScrollPos] = useState(0);
+
+  useEffect(() => {
+    window.addEventListener("scroll", updateScrollPos);
+
+    return () => {
+      window.removeEventListener("scroll", updateScrollPos);
+    };
+  }, []);
+
+  const updateScrollPos = () => {
+    setScrollPos(window.scrollY);
+    console.log(window.scrollY);
+  };
 
   const handleDetailButtonClick = (num) => {
     if (openDetail === num) setOpenDetail(null);
@@ -29,20 +45,37 @@ export default function Home() {
   };
 
   return (
-    <main>
+    <main id='main'>
       <Head>
         <title>Template Landing Page</title>
         <meta name='description' content='Template Landing Page' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <header>
+      <Fade bottom when={scrollPos >= 160}>
+        <div className='top-right'>
+          <LinkSmoothScroll loc='header'>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              width='25'
+              height='25'
+              fill='currentColor'
+              viewBox='0 0 16 16'>
+              <path
+                fillRule='evenodd'
+                d='M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z'
+              />
+            </svg>
+          </LinkSmoothScroll>
+        </div>
+      </Fade>
+      <header id='header'>
         <div className='desktop-header'>
           <div className='logo styled-font'>Company Name</div>
           <nav className='desktop-nav'>
-            <a href='#services'>Services</a>
-            <a href='#about'>About</a>
-            <a href='#pricing'>Pricing</a>
-            <a href='#faq'>FAQ</a>
+            <LinkSmoothScroll loc='services'>Services</LinkSmoothScroll>
+            <LinkSmoothScroll loc='about'>About</LinkSmoothScroll>
+            <LinkSmoothScroll loc='pricing'>Pricing</LinkSmoothScroll>
+            <LinkSmoothScroll loc='faq'>FAQ</LinkSmoothScroll>
           </nav>
           <div className='actions'>
             <div className='icon'>
@@ -93,18 +126,18 @@ export default function Home() {
           </div>
           <nav open={nav ? "open" : ""} className='mobile-nav'>
             <div className='mobile-links'>
-              <a onClick={handleToggleNav} href='#services'>
+              <LinkSmoothScroll onClick={handleToggleNav} loc='services'>
                 Services
-              </a>
-              <a onClick={handleToggleNav} href='#about'>
+              </LinkSmoothScroll>
+              <LinkSmoothScroll onClick={handleToggleNav} loc='about'>
                 About
-              </a>
-              <a onClick={handleToggleNav} href='#pricing'>
+              </LinkSmoothScroll>
+              <LinkSmoothScroll onClick={handleToggleNav} loc='pricing'>
                 Pricing
-              </a>
-              <a onClick={handleToggleNav} href='#faq'>
+              </LinkSmoothScroll>
+              <LinkSmoothScroll onClick={handleToggleNav} loc='faq'>
                 FAQ
-              </a>
+              </LinkSmoothScroll>
             </div>
             <div className='mobile-actions'>
               <div className='mobile-icon'>
@@ -143,6 +176,7 @@ export default function Home() {
       <section className='two-col'>
         <div className='section-text'>
           <h1 className='styled-font'>Company Name</h1>
+
           <p className='hero-text'>
             Cupidatat duis ipsum non eiusmod. Duis non id magna sint ex aute.
             Veniam in aliquip anim velit id cillum enim et irure magna
